@@ -11,45 +11,57 @@ def print_board():
     print(row2)
     print(row3)
     
+def check_winner(player):
+    win_cond = [
+        (0, 1, 2), (3, 4, 5), (6, 7, 8), # Rows
+        (0, 3, 6), (1, 4, 7), (2, 5, 8), # Columns
+        (0, 4, 8), (2, 4, 6)             # Diagonals
+    ]
+
+    for a, b, c in win_cond:
+        if board[a] == player and board[b] == player and board[c] == player:
+            return True
+    return False
+
+def check_tie():
+    return " " not in board
+
 def play_game(): 
     print("Welcome to Tic Tac Toe game!")
     print_board()
     player = "X"
     
     while True:
-        print("Enter a number between 1-9")
-        
-        user_text = input("Choose a spot: ")
-        choice = int(user_text) - 1
-        print(choice)
-        
-        if board[choice] == " ":
-            board[choice] = player
-
-            print_board()
+        try:
+            print("Enter a number between 1-9")
             
-            win_cond = [
-                (0, 1, 2), (3, 4, 5), (6, 7, 8), # Rows
-                (0, 3, 6), (1, 4, 7), (2, 5, 8), # Columns
-                (0, 4, 8), (2, 4, 6)             # Diagonals
-            ]
+            user_text = input("Choose a spot: ")
+            choice = int(user_text) - 1
             
-            for a, b, c in win_cond:
-                if board[a] == player and board[b] == player and board[c] == player:
+            if choice < 0 or choice > 8:
+                print("Please pick a number between 1 to 9.")
+                continue
+            
+            if board[choice] == " ":
+                board[choice] = player
+                print_board()
+    
+                if check_winner(player):
                     print(f"Player {player} wins!")
                     return
-                
-                if " " not in board:
+    
+                if check_tie():
                     print("It's a tie!")
                     return
-                
-            if player == "X":
-                player = "O"
+                    
+                if player == "X":
+                    player = "O"
+                else:
+                    player = "X"
             else:
-                player = "X"
-        else:
-            print("That spot is taken!")
+                print("That spot is taken!")
         
-        
+        except ValueError:
+            print("Please enter a number between 1 and 9.")
     
 play_game()
