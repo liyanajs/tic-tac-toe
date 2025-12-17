@@ -1,3 +1,5 @@
+import random
+
 board=[]
 for i in range(9):
     board.append(" ")
@@ -26,6 +28,28 @@ def check_winner(player):
 def check_tie():
     return " " not in board
 
+def computer_move(player):
+    print(f"Computer {player} is thinking...")
+    empty_spots = []
+    for j in range(9):
+        if board[j] == " ":
+            empty_spots.append(j)
+    
+    print("empty spots:", empty_spots)
+    
+    choice = random.choice(empty_spots)
+    board[choice]= player
+    print_board()
+    
+    if check_winner(player):
+        print(f"Computer {player} wins!")
+        return True
+    
+    if check_tie():
+        print("It's a tie!")
+        return True
+    
+    return False
 def play_game(): 
     print("Welcome to Tic Tac Toe game!")
     print_board()
@@ -54,10 +78,17 @@ def play_game():
                     print("It's a tie!")
                     return
                     
-                if player == "X":
-                    player = "O"
-                else:
-                    player = "X"
+                # if player == "X":
+                #     player = "O"
+                #     computer_move(player)
+                # else:
+                #     player = "X"
+                    
+                player = "O"
+                if computer_move(player):
+                    return
+                player = "X"
+                
             else:
                 print("That spot is taken!")
         
