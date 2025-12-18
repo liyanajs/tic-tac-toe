@@ -35,7 +35,27 @@ def computer_move(player):
         if board[j] == " ":
             empty_spots.append(j)
     
-    print("empty spots:", empty_spots)
+    for spot in empty_spots:
+        board[spot] = player
+        if check_winner(player):
+            print_board()
+            return True 
+        board[spot] = " "
+        
+    rival = "X"
+    for spot in empty_spots:
+        board[spot]= rival
+        if check_winner(rival):
+            board[spot] = player
+            print_board()
+            
+            if check_tie():
+                print("It's a tie!")
+                return True
+            return False
+        board[spot] = " "
+            
+            
     
     choice = random.choice(empty_spots)
     board[choice]= player
